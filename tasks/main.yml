@@ -15,10 +15,9 @@
   template:
     src: inventory.j2
     dest: "{{ install_dir }}/{{ installer_version }}/inventory"
-#   - name: Execute setup shell script
-#     command: "sh {{ install_dir }}/{{ installer_version }}/setup.sh"
-#     ignore_errors: true
-
+- name: Execute setup shell script
+  command: "sh {{ install_dir }}/{{ installer_version }}/setup.sh"
+  ignore_errors: true
 - name: Post Tower License
   uri:
     url: "https://{{ ansible_facts['default_ipv4']['address'] }}/api/v2/config/"
