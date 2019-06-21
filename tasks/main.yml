@@ -15,9 +15,18 @@
   template:
     src: inventory.j2
     dest: "{{ install_dir }}/{{ installer_version }}/inventory"
+- name: Check if Tower is runnning
+  uri:
+    url: "https://{{ ansible_facts['default_ipv4']['address'] }}/api/v2/ping/"
+    method: GET
+    validate_certs: false
+  register: command_result
 - name: Execute setup shell script
-  command: "sh {{ install_dir }}/{{ installer_version }}/setup.sh"
+  command: "sh setup.sh"
+  args:
+    chdir: "{{ install_dir }}/{{ installer_version }}"
   ignore_errors: true
+  when: command_result['status'] != 200
 - name: Post Tower License
   uri:
     url: "https://{{ ansible_facts['default_ipv4']['address'] }}/api/v2/config/"
@@ -31,3 +40,7 @@
     body_format: json
     body: "{{ lookup('file', license_file) }}"
     validate_certs: false
+    until: result.status == 200
+    retries: 60
+    delay: 5
+
