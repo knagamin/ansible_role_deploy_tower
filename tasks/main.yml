@@ -27,6 +27,7 @@
     method: GET
     validate_certs: false
   register: command_result
+  ignore_errors: true
 
 - name: Execute setup shell script
   command: "sh setup.sh"
@@ -48,6 +49,7 @@
     body_format: json
     body: "{{ lookup('file', license_file) }}"
     validate_certs: false
-    until: result.status == 200
-    retries: 60
-    delay: 5
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 5
