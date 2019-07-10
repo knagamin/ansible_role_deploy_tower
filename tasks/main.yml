@@ -8,7 +8,7 @@
 - name: Fetch installer
   get_url:
     url: "{{ download_url }}"
-    dest: "{{ install_dir }}"
+    dest: "{{ install_dir }}/{{ installer_version }}.tar.gz"
 
 - name: Unarchive installer
   unarchive:
