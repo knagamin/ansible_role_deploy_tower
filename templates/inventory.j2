@@ -4,17 +4,17 @@ localhost ansible_connection=local
 [database]
 
 [all:vars]
-admin_password='{{ admin_password }}'
+admin_password='{{ deploy_tower_admin_password }}'
 
-pg_host=''
-pg_port=''
+pg_host='{{ deploy_tower_pg_host | default('') }}'
+pg_port='{{ deploy_tower_pg_port | default('') }}'
 
-pg_database='awx'
-pg_username='awx'
-pg_password='{{ pg_password }}'
+pg_database='{{ deploy_tower_pg_database | default('awx') }}'
+pg_username='{{ deploy_tower_pg_username | default('awx') }}'
+pg_password='{{ deploy_tower_pg_password }}'
 
 rabbitmq_username=tower
-rabbitmq_password='{{ rabbitmq_password }}'
+rabbitmq_password='{{ deploy_tower_rabbitmq_password }}'
 rabbitmq_cookie=cookiemonster
 
 # Isolated Tower nodes automatically generate an RSA key for authentication;

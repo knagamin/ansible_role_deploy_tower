@@ -1,12 +1,10 @@
 ---
 # defaults file for deploy_tower
-version: 3.5.0-1
+version: 3.5.2
 license_file: files/license.txt
 install_dir: /tmp/
-installer_version: ansible-tower-setup-bundle-{{ version }}.el7
+installer_version: ansible-tower-setup-bundle-{{ version }}-1.el7
 download_url: https://releases.ansible.com/ansible-tower/setup-bundle/{{ installer_version }}.tar.gz
-admin_password: redhat
-pg_password: redhat
-rabbitmq_password: redhat
-
-
+deploy_tower_admin_password: redhat
+deploy_tower_pg_password: redhat
+deploy_tower_rabbitmq_password: redhat

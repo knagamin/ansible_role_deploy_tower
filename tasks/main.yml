@@ -44,7 +44,7 @@
       Content-Type: "application/json"
       Accept: "application/json"
     user: "admin"
-    password: "{{ admin_password }}"
+    password: "{{ deploy_tower_admin_password }}"
     force_basic_auth: true
     body_format: json
     body: "{{ lookup('file', license_file) }}"
