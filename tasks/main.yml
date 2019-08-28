@@ -1,19 +1,15 @@
 # tasks file for deploy_tower
 ---
+
 - name: Create install directory
   file:
     state: directory
     path: "{{ install_dir }}"
 
-- name: Fetch installer
-  get_url:
-    url: "{{ download_url }}"
-    dest: "{{ install_dir }}/{{ installer_version }}.tar.gz"
-
-- name: Unarchive installer
+- name: Fetch and unarchive installer
   unarchive:
     remote_src: true
-    src: "{{ install_dir }}/{{ installer_version }}.tar.gz"
+    src: "{{ download_url }}"
     dest: "{{ install_dir }}"
 
 - name: Deploy inventory file
