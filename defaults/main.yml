@@ -1,8 +1,14 @@
 ---
 # defaults file for deploy_tower
+rhel_major_version: 7
 version: 3.5.2
 license_file: files/license.txt
 install_dir: /tmp/
 deploy_tower_admin_password: redhat
 deploy_tower_pg_password: redhat
 deploy_tower_rabbitmq_password: redhat
+deploy_tower_force_install: false
+deploy_tower_required_packages:
+  - rsync
+  - zip
+  - tar

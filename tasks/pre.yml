@@ -1,0 +1,6 @@
+---
+- name: Check RHEL8 and Tower version dependency
+  assert:
+    that:
+      - version is version('3.5.0', '>=')
+  when: rhel_major_version == 8

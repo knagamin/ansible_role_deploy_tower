@@ -1,6 +1,21 @@
 # tasks file for deploy_tower
 ---
 
+- name: Run pre tasks
+  include_tasks:
+    file: pre.yml
+
+- name: Ensure right path depended with a version is given  
+  set_fact: 
+    installer_version: "{{ installer_version | regex_replace('.el\\d', '') }}"
+  when: version is version('3.6.0', '>=')
+
+
+- name: Install required packages
+  yum:
+    state: present
+    name: "{{ deploy_tower_required_packages }}"
+
 - name: Create install directory
   file:
     state: directory
@@ -22,7 +37,7 @@
     url: "https://{{ ansible_facts['default_ipv4']['address'] }}/api/v2/ping/"
     method: GET
     validate_certs: false
-  register: command_result
+  register: result
   ignore_errors: true
 
 - name: Execute setup shell script
@@ -30,7 +45,7 @@
   args:
     chdir: "{{ install_dir }}/{{ installer_version }}"
   ignore_errors: true
-  when: command_result['status'] != 200
+  when: deploy_tower_force_install or result['status'] != 200 
 
 - name: Post Tower License
   uri:
