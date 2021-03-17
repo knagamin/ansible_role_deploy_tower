@@ -1,8 +1,8 @@
 ---
-rhel_major_version: 7
-version: 3.5.2
-license_file: files/license.txt
-install_dir: /tmp/
+deploy_tower_rhel_major_version: 8
+deploy_tower_tower_version: latest
+deploy_tower_license_file: files/license.txt
+deploy_tower_install_dir: /var/tmp/
 deploy_tower_admin_password: redhat
 deploy_tower_pg_password: redhat
 deploy_tower_rabbitmq_password: redhat

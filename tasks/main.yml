@@ -1,55 +1,6 @@
 # tasks file for deploy_tower
 ---
-- name: Run pre tasks
-  include_tasks:
-    file: pre.yml
 
-- name: Install required packages
-  yum:
-    state: present
-    name: "{{ deploy_tower_required_packages }}"
+- include_tasks: pre.yml
+- include_tasks: install_tower.yml
 
-- name: Fetch and unarchive installer
-  unarchive:
-    remote_src: true
-    src: "{{ download_url }}"
-    dest: "{{ install_dir }}"
-
-- name: Deploy inventory file
-  template:
-    # src: inventory.j2
-    src: tower-38-inventory.j2
-    dest: "{{ install_dir }}/{{ installer_version }}/inventory"
-
-- name: Test if Tower is runnning
-  uri:
-    url: "https://{{ ansible_facts['default_ipv4']['address'] }}/api/v2/ping/"
-    method: GET
-    validate_certs: false
-  register: result
-  ignore_errors: true
-
-- name: Execute setup shell script
-  command: "sh setup.sh"
-  args:
-    chdir: "{{ install_dir }}/{{ installer_version }}"
-  ignore_errors: true
-  when: deploy_tower_force_install or result['status'] != 200 
-
-- name: Post Tower License
-  uri:
-    url: "https://{{ ansible_facts['default_ipv4']['address'] }}/api/v2/config/"
-    method: POST
-    headers:
-      Content-Type: "application/json"
-      Accept: "application/json"
-    user: "admin"
-    password: "{{ deploy_tower_admin_password }}"
-    force_basic_auth: true
-    body_format: json
-    body: "{{ lookup('file', license_file) }}"
-    validate_certs: false
-  register: result
-  until: result.status == 200
-  retries: 60
-  delay: 5

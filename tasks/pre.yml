@@ -2,15 +2,16 @@
 - name: Check RHEL8 and Tower version dependency
   assert:
     that:
-      - version is version('3.5.0', '>=')
-  when: rhel_major_version == 8
+      - deploy_tower_tower_version is version('3.5.0', '>=')
+  when: deploy_tower_rhel_major_version >= 8
 
-- name: Ensure right path depended with a version is given  
-  set_fact: 
-    installer_version: "{{ installer_version | regex_replace('.el\\d', '') }}"
-  when: version is version('3.6.0', '>=')
+# see also: https://releases.ansible.com/ansible-tower/setup-bundle/
+- name: Ensure right path depended with a version is give
+  set_fact:
+    deploy_tower_installer_version: "{{ deploy_tower_installer_version | regex_replace('.el\\d', '') }}"
+  when: deploy_tower_tower_version is version('3.6.2', '>=')
 
 - name: Ensure install directory is exsisting
   file:
     state: directory
-    path: "{{ install_dir }}"
+    path: "{{ deploy_tower_install_dir }}"
