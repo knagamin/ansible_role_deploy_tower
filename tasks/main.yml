@@ -1,25 +1,13 @@
 # tasks file for deploy_tower
 ---
-
 - name: Run pre tasks
   include_tasks:
     file: pre.yml
-
-- name: Ensure right path depended with a version is given  
-  set_fact: 
-    installer_version: "{{ installer_version | regex_replace('.el\\d', '') }}"
-  when: version is version('3.6.0', '>=')
-
 
 - name: Install required packages
   yum:
     state: present
     name: "{{ deploy_tower_required_packages }}"
-
-- name: Create install directory
-  file:
-    state: directory
-    path: "{{ install_dir }}"
 
 - name: Fetch and unarchive installer
   unarchive:
@@ -29,10 +17,11 @@
 
 - name: Deploy inventory file
   template:
-    src: inventory.j2
+    # src: inventory.j2
+    src: tower-38-inventory.j2
     dest: "{{ install_dir }}/{{ installer_version }}/inventory"
 
-- name: Check if Tower is runnning
+- name: Test if Tower is runnning
   uri:
     url: "https://{{ ansible_facts['default_ipv4']['address'] }}/api/v2/ping/"
     method: GET

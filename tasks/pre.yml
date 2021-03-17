@@ -4,3 +4,13 @@
     that:
       - version is version('3.5.0', '>=')
   when: rhel_major_version == 8
+
+- name: Ensure right path depended with a version is given  
+  set_fact: 
+    installer_version: "{{ installer_version | regex_replace('.el\\d', '') }}"
+  when: version is version('3.6.0', '>=')
+
+- name: Ensure install directory is exsisting
+  file:
+    state: directory
+    path: "{{ install_dir }}"

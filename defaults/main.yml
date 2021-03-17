@@ -1,5 +1,4 @@
 ---
-# defaults file for deploy_tower
 rhel_major_version: 7
 version: 3.5.2
 license_file: files/license.txt
